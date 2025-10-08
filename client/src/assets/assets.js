@@ -7,7 +7,7 @@ import upload_area from './upload_area.svg'
 import sketch from './sktech.svg' 
 import heroVideo from './herobg.mp4' 
 import microsoft_logo from './microsoft_logo.svg'
-import CallToActionVideo from './CallToActionBg.mp4'; 
+import CallToActionVideo from './CallToActionVid.mp4'; 
 import companiesVideo from './CompaniesBg.mp4' // <--- NEW IMPORT ADDED
 import walmart_logo from './walmart_logo.svg'
 import CourseSection_bg from './CourseSection.jpg';
@@ -58,7 +58,7 @@ export const assets = {
     sketch,
     heroVideo,
     CourseSection_bg,
-    callToActionVideo, 
+    CallToActionVideo, 
     companiesVideo, // <--- NEW EXPORT ADDED
     microsoft_logo,
     walmart_logo,
