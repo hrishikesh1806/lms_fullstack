@@ -16,7 +16,7 @@ const CallToAction = () => {
                 autoPlay 
                 loop 
                 muted 
-                src={assets.callToActionVideo}
+                src={assets.getstartedVideo}
                 className="absolute inset-0 z-0 w-full h-full object-cover object-center"
             >
                 Your browser does not support the video tag.

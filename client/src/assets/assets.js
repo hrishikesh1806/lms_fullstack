@@ -7,10 +7,11 @@ import upload_area from './upload_area.svg'
 import sketch from './sktech.svg' 
 import heroVideo from './herobg.mp4' 
 import microsoft_logo from './microsoft_logo.svg'
-const CallToActionVideo = '/CallToActionVid.mp4'; 
-const companiesVideo = '/CompaniesVid.mp4' // <--- NEW IMPORT ADDED
+const CallToActionVideo = '/videos/CallToActionVid.mp4'; 
+const companiesVideo = '/videos/CompaniesVid.mp4'
+const getstartedVideo = '/videos/GetStartedVid.mp4'
 import walmart_logo from './walmart_logo.svg'
-import CourseSection_bg from './CourseSection.jpg';
+import CourseSection_bg from './CourseSection.jpg'
 import accenture_logo from './accenture_logo.svg'
 import adobe_logo from './adobe_logo.svg'
 import paypal_logo from './paypal_logo.svg'
@@ -60,6 +61,7 @@ export const assets = {
     CourseSection_bg,
     CallToActionVideo, 
     companiesVideo, // <--- NEW EXPORT ADDED
+    getstartedVideo,
     microsoft_logo,
     walmart_logo,
     accenture_logo,
