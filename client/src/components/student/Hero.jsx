@@ -5,7 +5,7 @@ import SearchBar from '../../components/student/SearchBar';
 const Hero = () => {
     return (
         <div 
-            className="relative flex flex-col items-center justify-center w-full min-h-[730px] md:pt-80 pt-32 px-7 md:px-0 space-y-7 text-center 
+         className="relative flex flex-col items-center justify-center w-full min-h-[730px] md:pt-80 pt-32 px-7 md:px-0 space-y-7 text-center 
                         text-white overflow-hidden border-b-0 pb-0 mb-0" 
         >
             
