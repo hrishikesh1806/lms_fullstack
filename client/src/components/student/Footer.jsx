@@ -58,7 +58,7 @@ const Footer = () => {
                     <div className="flex flex-col">
                         <h3 className="text-lg font-semibold text-white mb-4">Platform</h3>
                         <ul className="space-y-3 text-sm text-gray-400">
-                            <li><a href="#" className="hover:text-orange-500 transition duration-200">All Courses</a></li>
+                            <li><a href="#" className="hover:text-orange-500 transition duration-200">All Projects</a></li>
                             <li><a href="#" className="hover:text-orange-500 transition duration-200">Pricing Plans</a></li>
                             <li><a href="#" className="hover:text-orange-500 transition duration-200">Student Success</a></li>
                             <li><a href="#" className="hover:text-orange-500 transition duration-200">Affiliate Program</a></li>

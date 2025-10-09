@@ -22,10 +22,10 @@ const TestimonialsSection = () => {
                 
                 {/* Header Text */}
                 <h2 className="text-5xl font-extrabold text-white text-center leading-tight">
-                    Trusted by Experts.<br className="hidden sm:inline" />Loved by Learners.
+                    Trusted by Experts.<br className="hidden sm:inline" />Loved by Clients.
                 </h2>
                 <p className="md:text-xl text-gray-400 mt-5 mb-20 text-center max-w-3xl mx-auto font-light">
-                    Join thousands of professionals who have transformed their careers with our top-rated courses.
+                    Join thousands of professionals who have transformed their careers with our top-rated projects.
                 </p>
 
                 {/* Testimonial Cards - HORIZONTAL SCROLLING CONTAINER */}

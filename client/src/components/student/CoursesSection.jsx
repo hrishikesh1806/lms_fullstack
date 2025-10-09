@@ -23,18 +23,33 @@ const CoursesSection = () => {
                 
                 {/* Header Text: Larger, bolder, more professional font style */}
                 <h2 className="text-5xl font-extrabold text-white leading-tight mb-4">
-                    Unlock Your Potential. Start Learning Today.
+                    Unlock Your Potential. Start Building Today.
                 </h2>
                 
                 {/* Subtext: Clearer, lighter font */}
                 <p className="md:text-xl text-gray-300 font-light max-w-3xl mx-auto mb-16">
-                    Discover our exclusive, top-rated courses across coding, design, business, and more, all crafted by industry leaders.
+                    Discover our exclusive, top-rated projects across coding, design, business, and more, all crafted by industry leaders.
                 </p>
                 
                 {/* Course Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:my-16 my-10 gap-8"> 
                     {allCourses.slice(0, 4).map((course, index) => (
-                        <div key={index}>
+                        <div 
+                            key={index} 
+                            // APPLY THE HOVER EFFECT HERE
+                            className="
+                                // Base styles for transition
+                                transition-all duration-300 ease-in-out 
+                                transform hover:-translate-y-1 
+                                
+                                // Golden Shadow on Hover
+                                hover:shadow-2xl 
+                                hover:shadow-yellow-500/50 
+                                rounded-xl 
+                            "
+                        >
+                            {/* NOTE: CourseCard must have 'rounded-xl' and appropriate background/shadow styles 
+                                to prevent visual overlap with the parent's shadow/border. */}
                             <CourseCard course={course} />
                         </div>
                     ))}
@@ -55,7 +70,7 @@ const CoursesSection = () => {
                         transform hover:scale-[1.02]
                     "
                 >
-                    Explore All 100+ Courses
+                    Explore All 100+ Projects
                 </Link>
             </div>
         </div>

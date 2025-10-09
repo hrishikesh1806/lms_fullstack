@@ -59,7 +59,7 @@ const StudentsEnrolled = () => {
             <tr>
               <th className="px-6 py-3 font-semibold text-center hidden sm:table-cell w-[50px]">#</th>
               <th className="px-6 py-3 font-semibold w-1/4">Student Name</th>
-              <th className="px-6 py-3 font-semibold w-auto">Course Title</th>
+              <th className="px-6 py-3 font-semibold w-auto">Project Title</th>
               <th className="px-6 py-3 font-semibold hidden sm:table-cell w-[120px]">Date Enrolled</th>
             </tr>
           </thead>

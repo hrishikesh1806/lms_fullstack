@@ -62,7 +62,9 @@ const Navbar = () => {
             <div className={`fixed top-0 z-50 w-full flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-36 border-b border-pink-700 py-2 
                              bg-gray-900 
                              bg-gradient-to-l from-gray-950 to-blue-700 
-                             shadow-2xl ring-1 ring-white/10`}>
+                             shadow-2xl ring-1 ring-white/10 
+                             shadow-[-5px_15px_15px_-5px_rgba(0,0,0,0.6)]`} // KEY CHANGE: Added custom shadow class for strong bottom shadow
+            >
                 
                 {/* Logo Wrapper (Static) */}
                 <div 

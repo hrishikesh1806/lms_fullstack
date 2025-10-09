@@ -15,13 +15,13 @@ const SideBar = () => {
       hoverClass: 'hover:bg-blue-100 hover:text-blue-800' 
     },
     { 
-      name: 'Add Course', 
+      name: 'Add Projects', 
       path: '/educator/add-course', 
       icon: assets.add_icon, 
       hoverClass: 'hover:bg-green-100 hover:text-green-800' 
     },
     { 
-      name: 'My Courses', 
+      name: 'My Projects', 
       path: '/educator/my-courses', 
       icon: assets.my_course_icon, 
       hoverClass: 'hover:bg-purple-100 hover:text-purple-800' 

@@ -37,7 +37,7 @@ const SearchBar = ({ data, className }) => {
                 value={input} 
                 type="text" 
                 className="w-full h-full outline-none bg-transparent text-white placeholder-white/80" 
-                placeholder="Search for courses" 
+                placeholder="Search for projects" 
             />
             
             {/* Search Button: Updated to orange accent color */}

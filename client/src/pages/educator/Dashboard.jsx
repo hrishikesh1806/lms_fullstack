@@ -65,7 +65,7 @@ const Dashboard = () => {
             <img src={assets.patients_icon} alt="Enrolments Icon" className='w-10 h-10 filter brightness-90 saturate-200 hue-rotate-200 text-indigo-500'/>
             <div>
               <p className='text-3xl font-bold text-indigo-600'>{dashboardData.enrolledStudentsData.length}</p>
-              <p className='text-sm text-gray-500'>Total Enrolments</p>
+              <p className='text-sm text-gray-500'>Total Enrollments</p>
             </div>
           </div>
           {/* Card 2: Total Courses */}
@@ -77,7 +77,7 @@ const Dashboard = () => {
             <img src={assets.appointments_icon} alt="Courses Icon" className='w-10 h-10 filter brightness-90 saturate-200 hue-rotate-200 text-indigo-500'/>
             <div>
               <p className='text-3xl font-bold text-indigo-600'>{dashboardData.totalCourses}</p>
-              <p className='text-sm text-gray-500'>Total Courses</p>
+              <p className='text-sm text-gray-500'>Total Projects</p>
             </div>
           </div>
           
@@ -103,7 +103,7 @@ const Dashboard = () => {
       {/* LATEST ENROLMENTS TABLE SECTION */}
       {/* ----------------------------------------------------------------------------- */}
       <div className='w-full'>
-        <h2 className="pb-4 text-xl font-semibold text-gray-700">Latest Enrolments</h2>
+        <h2 className="pb-4 text-xl font-semibold text-gray-700">Latest Enrollments</h2>
         
         {/* Table Container: Clean background, removed harsh border, added shadow */}
         <div className="flex flex-col max-w-5xl w-full overflow-x-auto rounded-lg shadow-xl bg-white
@@ -117,7 +117,7 @@ const Dashboard = () => {
               <tr>
                 <th className="px-6 py-3 font-semibold text-center hidden sm:table-cell w-[50px]">#</th>
                 <th className="px-6 py-3 font-semibold w-1/4">Student Name</th>
-                <th className="px-6 py-3 font-semibold w-auto">Course Title</th>
+                <th className="px-6 py-3 font-semibold w-auto">Project Title</th>
                 <th className="px-6 py-3 font-semibold hidden md:table-cell w-[120px] text-right">Enrolled Date</th>
               </tr>
             </thead>

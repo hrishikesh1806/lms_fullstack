@@ -77,7 +77,7 @@ const MyEnrollments = () => {
                         {/* ------------------------------------------------------------------------- */}
                         <thead className="text-gray-700 bg-blue-300 border-b border-gray-200 text-sm text-left">
                             <tr>
-                                <th className="px-4 py-3 font-semibold truncate">Course</th>
+                                <th className="px-4 py-3 font-semibold truncate">Project</th>
                                 <th className="px-4 py-3 font-semibold truncate max-sm:hidden">Duration</th>
                                 <th className="px-4 py-3 font-semibold truncate max-sm:hidden">Completed</th>
                                 <th className="px-4 py-3 font-semibold truncate">Status</th>
@@ -119,7 +119,7 @@ const MyEnrollments = () => {
                 {/* Message for zero enrollments */}
                 {enrolledCourses.length === 0 && (
                     <p className="p-10 text-center text-gray-500 bg-white rounded-lg w-full shadow-xl mt-10">
-                        You have not enrolled in any courses yet.
+                        You have not enrolled in any project yet.
                     </p>
                 )}
 
