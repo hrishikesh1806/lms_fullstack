@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from 'react';
+import React, { useContext, useCallback, useState } from 'react';
 import { assets } from '../../assets/assets';
 import { Link, useLocation } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
@@ -9,8 +9,13 @@ import axios from 'axios';
 
 const Navbar = () => {
 
+    const [showLoginOptions, setShowLoginOptions] = useState(false);
+
     const location = useLocation();
 
+    // NOTE: If you are using the role selection feature, you must ensure 'setPendingRole' 
+    // is destructured here, and the login functions below are updated accordingly.
+    // Based on your original file, I'm using the original destructuring:
     const { backendUrl, isEducator, setIsEducator, navigate, getToken } = useContext(AppContext);
 
     // Destructure necessary functions from useClerk
@@ -18,7 +23,6 @@ const Navbar = () => {
     const { isSignedIn } = useUser(); // use isSignedIn for cleaner checks
 
     const becomeEducator = useCallback(async () => {
-        // ... (existing logic remains unchanged)
         try {
             if (isEducator) {
                 navigate('/educator');
@@ -70,7 +74,7 @@ const Navbar = () => {
                 <div 
                     onClick={() => navigate('/')} 
                     className="relative z-10 w-28 lg:w-32 cursor-pointer transition duration-500 hover:scale-[1.05] active:scale-[0.98] 
-                                  rounded-md p-1 bg-white shadow-lg shadow-white/40" 
+                                 rounded-md p-1 bg-white shadow-lg shadow-white/40" 
                 >
                     <img 
                         src={assets.logo} 
@@ -181,7 +185,6 @@ const Navbar = () => {
                                     aria-label="Logout"
                                     className="transition duration-300 hover:scale-110 active:scale-90"
                                 >
-                                    {/* You need a logout icon here, or just show the user button */}
                                     <img src={assets.logout_icon} alt="Logout icon" className="w-6 h-6 filter invert" /> 
                                 </button>
                                 <UserButton 
@@ -194,7 +197,7 @@ const Navbar = () => {
                             </>
                         )
                         : (
-                            // Logged Out: Show Mobile Sign In Icon Button (Keep it unified on mobile for space)
+                            // Logged Out: Show Mobile Sign In Icon Button
                             <button 
                                 type="button" 
                                 onClick={() => openSignIn()} 

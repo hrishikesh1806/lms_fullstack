@@ -6,218 +6,156 @@ import { clerkClient } from '@clerk/express'
 
 // update role to educator
 export const updateRoleToEducator = async (req, res) => {
-    // ... (existing implementation)
-    try {
 
-        const userId = req.auth.userId
+    try {
 
-        await clerkClient.users.updateUserMetadata(userId, {
-            publicMetadata: {
-                role: 'educator',
-            },
-        })
+        const userId = req.auth.userId
 
-        res.json({ success: true, message: 'You can publish a course now' })
+        await clerkClient.users.updateUserMetadata(userId, {
+            publicMetadata: {
+                role: 'educator',
+            },
+        })
 
-    } catch (error) {
-        res.json({ success: false, message: error.message })
-    }
+        res.json({ success: true, message: 'You can publish a course now' })
+
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+
 }
 
 // Add New Course
 export const addCourse = async (req, res) => {
-    // ... (existing implementation)
-    try {
 
-        const { courseData } = req.body
+    try {
 
-        const imageFile = req.file
+        const { courseData } = req.body
 
-        const educatorId = req.auth.userId
+        const imageFile = req.file
 
-        if (!imageFile) {
-            return res.json({ success: false, message: 'Thumbnail Not Attached' })
-        }
+        const educatorId = req.auth.userId
 
-        const parsedCourseData = await JSON.parse(courseData)
+        if (!imageFile) {
+            return res.json({ success: false, message: 'Thumbnail Not Attached' })
+        }
 
-        parsedCourseData.educator = educatorId
+        const parsedCourseData = await JSON.parse(courseData)
 
-        const newCourse = await Course.create(parsedCourseData)
+        parsedCourseData.educator = educatorId
 
-        const imageUpload = await cloudinary.uploader.upload(imageFile.path)
+        const newCourse = await Course.create(parsedCourseData)
 
-        newCourse.courseThumbnail = imageUpload.secure_url
+        const imageUpload = await cloudinary.uploader.upload(imageFile.path)
 
-        await newCourse.save()
+        newCourse.courseThumbnail = imageUpload.secure_url
 
-        res.json({ success: true, message: 'Course Added' })
+        await newCourse.save()
 
-    } catch (error) {
+        res.json({ success: true, message: 'Course Added' })
 
-        res.json({ success: false, message: error.message })
+    } catch (error) {
 
-    }
+        res.json({ success: false, message: error.message })
+
+    }
 }
 
 // Get Educator Courses
 export const getEducatorCourses = async (req, res) => {
-    // ... (existing implementation)
-    try {
+    try {
 
-        const educator = req.auth.userId
+        const educator = req.auth.userId
 
-        const courses = await Course.find({ educator })
+        const courses = await Course.find({ educator })
 
-        res.json({ success: true, courses })
+        res.json({ success: true, courses })
 
-    } catch (error) {
-        res.json({ success: false, message: error.message })
-    }
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
 }
 
 // Get Educator Dashboard Data ( Total Earning, Enrolled Students, No. of Courses)
 export const educatorDashboardData = async (req, res) => {
-    // ... (existing implementation)
-    try {
-        const educator = req.auth.userId;
+    try {
+        const educator = req.auth.userId;
 
-        const courses = await Course.find({ educator });
+        const courses = await Course.find({ educator });
 
-        const totalCourses = courses.length;
+        const totalCourses = courses.length;
 
-        const courseIds = courses.map(course => course._id);
+        const courseIds = courses.map(course => course._id);
 
-        // Calculate total earnings from purchases
-        const purchases = await Purchase.find({
-            courseId: { $in: courseIds },
-            status: 'completed'
-        });
+        // Calculate total earnings from purchases
+        const purchases = await Purchase.find({
+            courseId: { $in: courseIds },
+            status: 'completed'
+        });
 
-        const totalEarnings = purchases.reduce((sum, purchase) => sum + purchase.amount, 0);
+        const totalEarnings = purchases.reduce((sum, purchase) => sum + purchase.amount, 0);
 
-        // Collect unique enrolled student IDs with their course titles
-        const enrolledStudentsData = [];
-        for (const course of courses) {
-            const students = await User.find({
-                _id: { $in: course.enrolledStudents }
-            }, 'name imageUrl');
+        // Collect unique enrolled student IDs with their course titles
+        const enrolledStudentsData = [];
+        for (const course of courses) {
+            const students = await User.find({
+                _id: { $in: course.enrolledStudents }
+            }, 'name imageUrl');
 
-            students.forEach(student => {
-                enrolledStudentsData.push({
-                    courseTitle: course.courseTitle,
-                    student
-                });
-            });
-        }
+            students.forEach(student => {
+                enrolledStudentsData.push({
+                    courseTitle: course.courseTitle,
+                    student
+                });
+            });
+        }
 
-        res.json({
-            success: true,
-            dashboardData: {
-                totalEarnings,
-                enrolledStudentsData,
-                totalCourses
-            }
-        });
-    } catch (error) {
-        res.json({ success: false, message: error.message });
-    }
+        res.json({
+            success: true,
+            dashboardData: {
+                totalEarnings,
+                enrolledStudentsData,
+                totalCourses
+            }
+        });
+    } catch (error) {
+        res.json({ success: false, message: error.message });
+    }
 };
 
 // Get Enrolled Students Data with Purchase Data
 export const getEnrolledStudentsData = async (req, res) => {
-    // ... (existing implementation)
-    try {
-        const educator = req.auth.userId;
-
-        // Fetch all courses created by the educator
-        const courses = await Course.find({ educator });
-
-        // Get the list of course IDs
-        const courseIds = courses.map(course => course._id);
-
-        // Fetch purchases with user and course data
-        const purchases = await Purchase.find({
-            courseId: { $in: courseIds },
-            status: 'completed'
-        }).populate('userId', 'name imageUrl').populate('courseId', 'courseTitle');
-
-        // enrolled students data
-        const enrolledStudents = purchases.map(purchase => ({
-            student: purchase.userId,
-            courseTitle: purchase.courseId.courseTitle,
-            purchaseDate: purchase.createdAt
-        }));
-
-        res.json({
-            success: true,
-            enrolledStudents
-        });
-
-    } catch (error) {
-        res.json({
-            success: false,
-            message: error.message
-        });
-    }
-};
-
-
-// ------------------------------------------------------------------
-// NEW FUNCTION: updateCourse 
-// ------------------------------------------------------------------
-export const updateCourse = async (req, res) => {
     try {
-        const courseId = req.params.id;
-        const educatorId = req.auth.userId; 
-        const file = req.file; 
+        const educator = req.auth.userId;
 
-        // Text fields are directly in req.body
-        const { courseTitle, courseDescription } = req.body;
+        // Fetch all courses created by the educator
+        const courses = await Course.find({ educator });
 
-        // 1. Find Course and Authorize
-        const course = await Course.findById(courseId);
-        if (!course) {
-            return res.status(404).json({ success: false, message: "Course not found." });
-        }
-        
-        // Ensure the logged-in user is the course owner
-        if (course.educator.toString() !== educatorId) {
-             return res.status(403).json({ success: false, message: "Unauthorized: You do not own this course." });
-        }
+        // Get the list of course IDs
+        const courseIds = courses.map(course => course._id);
 
-        const updateFields = {};
-        
-        // 2. Update Text Fields (only if they are provided in the request)
-        if (courseTitle) updateFields.courseTitle = courseTitle;
-        if (courseDescription) updateFields.courseDescription = courseDescription;
+        // Fetch purchases with user and course data
+        const purchases = await Purchase.find({
+            courseId: { $in: courseIds },
+            status: 'completed'
+        }).populate('userId', 'name imageUrl').populate('courseId', 'courseTitle');
 
-        // 3. Handle Image Update
-        if (file) {
-            // Use the same Cloudinary upload method as in addCourse
-            const imageUpload = await cloudinary.uploader.upload(file.path); 
-            
-            // Store the new public URL
-            updateFields.courseThumbnail = imageUpload.secure_url;
-            
-            // OPTIONAL: Delete the old image from Cloudinary if needed.
-        }
+        // enrolled students data
+        const enrolledStudents = purchases.map(purchase => ({
+            student: purchase.userId,
+            courseTitle: purchase.courseId.courseTitle,
+            purchaseDate: purchase.createdAt
+        }));
 
-        // 4. Database Update
-        const updatedCourse = await Course.findByIdAndUpdate(
-            courseId,
-            { $set: updateFields },
-            { new: true, runValidators: true } 
-        );
-
-        res.json({ 
-            success: true, 
-            message: "Course updated successfully!", 
-            course: updatedCourse 
+        res.json({
+            success: true,
+            enrolledStudents
         });
 
     } catch (error) {
-        console.error("Error updating course:", error);
-        res.status(500).json({ success: false, message: error.message });
+        res.json({
+            success: false,
+            message: error.message
+        });
     }
-}
+};
