@@ -30,6 +30,7 @@ const CoursesList = () => {
     
     // Search Bar Styling:
     // CHANGED: Updated SearchBar to use a brand-aligned color (Indigo) and cleaner shadow.
+    // MODIFICATION: Changed bg-red-500 to a purple shade (bg-purple-600) as requested.
     const searchBarClassName = "md:mt-2 mt-4 bg-purple-500 text-lg !text-white shadow-xl flex-1 md:max-w-md placeholder-white/80";
 
     return (
