@@ -1,3 +1,5 @@
+// src/pages/educator/AddCourse.jsx (Reverted/Initial)
+
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { assets } from '../../assets/assets';
 import { toast } from 'react-toastify'
@@ -11,8 +13,8 @@ const AddCourse = () => {
     const editorRef = useRef(null);
     const quillRef = useRef(null);
 
-    // MODIFIED: Destructure fetchAllCourses from AppContext
-    const { backendUrl, getToken, fetchAllCourses } = useContext(AppContext)
+    // Reverting to only necessary context values
+    const { backendUrl, getToken } = useContext(AppContext)
 
     const [courseTitle, setCourseTitle] = useState('')
     const [coursePrice, setCoursePrice] = useState(0)
@@ -127,10 +129,7 @@ const AddCourse = () => {
             if (data.success) {
                 toast.success(data.message)
 
-                // ********************** THE FIX **********************
-                // Call fetchAllCourses to refresh the global project list state
-                await fetchAllCourses();
-                // *****************************************************
+                // REMOVED: await fetchEducatorCourses();
 
                 setCourseTitle('')
                 setCoursePrice(0)
@@ -168,9 +167,9 @@ const AddCourse = () => {
 
             {/* Main Form Container - Added professional styling */}
             <div className='bg-white p-8 rounded-xl shadow-xl max-w-2xl w-full mx-auto
-                            transform hover:scale-[1.01]
-                            hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)]
-                            transition-all duration-300 ease-in-out'>
+                            transform hover:scale-[1.01]
+                            hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)]
+                            transition-all duration-300 ease-in-out'>
 
                 <form onSubmit={handleSubmit} className='flex flex-col gap-6 w-full text-gray-600'>
 
