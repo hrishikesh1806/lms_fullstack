@@ -114,7 +114,7 @@ const Footer = () => {
             {/* Copyright Bar */}
             <div className="bg-gray-900 py-4">
                  <p className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-gray-500">
-                    © 2024 GreatStack. All Rights Reserved. | Made with 🧡 for the future of learning.
+                    © 2025 Aparaitech . All Rights Reserved. | Made with 🧡 for the future of learning.
                 </p>
             </div>
         </footer>

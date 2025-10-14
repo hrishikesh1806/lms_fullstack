@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
-import { assets } from '../../assets/assets'
-import { AppContext } from '../../context/AppContext'
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { assets } from '../../assets/assets';
+import { AppContext } from '../../context/AppContext';
 
 const CourseCard = ({ course }) => {
 
-    const { currency, calculateRating } = useContext(AppContext)
+    const { currency, calculateRating } = useContext(AppContext);
     
     // Calculate final price and original price for the display
     const finalPrice = (course.coursePrice - course.discount * course.coursePrice / 100).toFixed(2);
@@ -13,13 +13,20 @@ const CourseCard = ({ course }) => {
     const hasDiscount = course.discount > 0;
 
     return (
-        // 1. Attractive Wrapper: Added shadow, subtle transition, and hover effect
+        // 1. Overall Link (Card Container): Removed 'border border-gray-100/50'
         <Link 
             onClick={() => scrollTo(0, 0)} 
             to={'/course/' + course._id} 
-            className="block bg-pink-100 rounded-xl shadow-lg hover:shadow-2xl 
-                       transform hover:scale-[1.02] transition-all duration-300 
-                       overflow-hidden border border-gray-100/50 group" // 'group' for image hover
+            className="block rounded-xl shadow-xl bg-white 
+                        transition-all duration-300 ease-in-out 
+                        overflow-hidden group
+                        
+                        // Stronger 3D Hover Effect
+                        transform hover:scale-[1.03] hover:-translate-y-2 // Stronger lift
+                        
+                        // Intense Golden Shadow on Hover
+                        hover:shadow-3xl hover:shadow-yellow-500/70 // More intense shadow
+                        " 
         >
             {/* 2. Image Container with Hover Zoom */}
             <div className="h-40 overflow-hidden rounded-t-xl">
@@ -30,8 +37,8 @@ const CourseCard = ({ course }) => {
                 />
             </div>
 
-            {/* 3. Content Area - Improved Padding and Hierarchy */}
-            <div className="p-4 text-left">
+            {/* 3. Content Area - Using solid white background for strong contrast and depth perception */}
+            <div className="p-4 text-left bg-white">
                 
                 {/* Title - Larger and more prominent */}
                 <h3 className="text-xl font-extrabold text-gray-900 mb-1 line-clamp-2">
@@ -45,7 +52,8 @@ const CourseCard = ({ course }) => {
                 
                 {/* Rating - Highlighted */}
                 <div className="flex items-center space-x-2 mb-3">
-                    <p className="font-bold text-yellow-600">{calculateRating(course)}</p>
+                    {/* Applying a slight text shadow to the rating for subtle depth */}
+                    <p className="font-bold text-yellow-600 drop-shadow-sm">{calculateRating(course)}</p>
                     <div className="flex">
                         {[...Array(5)].map((_, i) => (
                             <img
@@ -78,4 +86,4 @@ const CourseCard = ({ course }) => {
     )
 }
 
-export default CourseCard
+export default CourseCard;

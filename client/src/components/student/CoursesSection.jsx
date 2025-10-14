@@ -16,14 +16,15 @@ const CoursesSection = () => {
             }}
         >
             {/* 1. OVERLAY LAYER (z-10): Increased darkness and added a subtle gradient for depth */}
-            <div className="absolute inset-0 z-10 bg-black/60 bg-gradient-to-t from-black/70 to-black/30"></div> 
+            <div className="absolute inset-0 z-10 bg-black/60 bg-gradient-to-t from-black/70 to-black/90"></div> 
             
             {/* 2. CONTENT WRAPPER (z-30) */}
-            <div className="relative z-30 text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> 
+            <div className="relative z-30 text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 
+                        shadow-inner shadow-black/50 p-6 rounded-2xl"> 
                 
-                {/* Header Text: Larger, bolder, more professional font style */}
-                <h2 className="text-5xl font-extrabold text-white leading-tight mb-4">
-                    Unlock Your Potential. Start Building Today.
+                {/* Header Text: UPDATED - Wrapped "Start Building Today" in an orange span */}
+                <h2 className="text-5xl font-extrabold text-white leading-tight mb-4 drop-shadow-lg drop-shadow-gray-900/50">
+                    Unlock Your Potential. <span className="text-orange-400">Start Building Today.</span>
                 </h2>
                 
                 {/* Subtext: Clearer, lighter font */}
@@ -33,25 +34,12 @@ const CoursesSection = () => {
                 
                 {/* Course Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:my-16 my-10 gap-8"> 
+                    {/* Simplified iteration: CourseCard now handles all its styling */}
                     {allCourses.slice(0, 4).map((course, index) => (
-                        <div 
+                        <CourseCard 
                             key={index} 
-                            // APPLY THE HOVER EFFECT HERE
-                            className="
-                                // Base styles for transition
-                                transition-all duration-300 ease-in-out 
-                                transform hover:-translate-y-1 
-                                
-                                // Golden Shadow on Hover
-                                hover:shadow-2xl 
-                                hover:shadow-yellow-500/50 
-                                rounded-xl 
-                            "
-                        >
-                            {/* NOTE: CourseCard must have 'rounded-xl' and appropriate background/shadow styles 
-                                to prevent visual overlap with the parent's shadow/border. */}
-                            <CourseCard course={course} />
-                        </div>
+                            course={course} 
+                        />
                     ))}
                 </div>
                 
@@ -66,8 +54,9 @@ const CoursesSection = () => {
                         bg-orange-600 hover:bg-orange-700 
                         transition duration-300 
                         text-white text-lg font-bold 
-                        shadow-lg shadow-orange-600/50 
-                        transform hover:scale-[1.02]
+                        shadow-2xl shadow-orange-700/70 
+                        transform hover:scale-105 hover:-translate-y-1 
+                        active:scale-95
                     "
                 >
                     Explore All 100+ Projects

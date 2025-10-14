@@ -4,14 +4,28 @@ import search_icon from './search_icon.svg'
 import cross_icon from './cross_icon.svg'
 import upload_area from './upload_area.svg'
 import AndroidAppDevelopment from './AndroidAppDevelopment.jpg'
-import ArtificialIntelligence from './ArtificialIntelligence.jpg' // Added to export
-import CloudComputing from './CloudComputing.jpg' // Added to export
-import CyberSecurity from './CyberSecurity.jpg' // Added to export
-import DataScience from './DataScience.jpg' // Added to export
-import DSA from './DSA.jpg' // Added to export
-import FullStackDevelopment from './FullStackDevelopment.jpg' // Added to export
-import MachineLearning from './MachineLearning.jpg' // Added to export
-import UiUx from './UiUx.jpg' // Added to export
+import ArtificialIntelligence from './ArtificialIntelligence.jpg' 
+import CloudComputing from './CloudComputing.jpg' 
+import CyberSecurity from './CyberSecurity.jpg' 
+import DataScience from './DataScience.jpg' 
+import DSA from './DSA.jpg' 
+import FullStackDevelopment from './FullStackDevelopment.jpg' 
+import MachineLearning from './MachineLearning.jpg' 
+import UiUx from './UiUx.jpg' 
+import ARVR from './ARVR.jpg'
+import DroneEngineering from './DroneEngineering.jpg'
+import RoboticsEngineering from './RoboticsEngineering.jpg'
+import Maaif from './MAAIF.jpg'
+import Maccf from './MACCF.jpg'
+import Macsf from './MACSF.jpg'
+import Madsf from './MADSF.jpg'
+import BusinessAnalytics from './BusinessAnalytics.jpg'
+import CorporateLaw from './CorporateLaw.jpg'
+import DigitalMarketing from './DigitalMarketing.jpg'
+import Finance from './Finance.jpg'
+import GraphicDesign from './GraphicDesign.jpg'
+import HrManagement from './HRManagement.jpg'
+import StockMarketing from './StockMarketing.jpg'
 import sketch from './sktech.svg' 
 import heroVideo from './herobg.mp4' 
 import microsoft_logo from './microsoft_logo.svg'
@@ -29,7 +43,7 @@ import tesla_logo from './tesla_logo.png'
 import course_1_thumbnail from './course_1.png'
 import course_2_thumbnail from './course_2.png'
 import course_3_thumbnail from './course_3.png'
-import course_4_thumbnail from './course_4.png' // Kept this one, removed duplicate 'course_4'
+import course_4_thumbnail from './course_4.png' 
 import star from './rating_star.svg'
 import star_blank from './star_dull_icon.svg'
 import profile_img_1 from './profile_img_1.png'
@@ -78,15 +92,29 @@ export const assets = {
     // Course Section & Category Images
     CourseSection_bg,
     AndroidAppDevelopment,
-    ArtificialIntelligence, // ADDED
-    CloudComputing, // ADDED
-    CyberSecurity, // ADDED
-    DataScience, // ADDED
-    DSA, // ADDED
-    FullStackDevelopment, // ADDED
-    MachineLearning, // ADDED
-    UiUx, // ADDED
-
+    ArtificialIntelligence,
+    CloudComputing,
+    CyberSecurity,
+    DataScience,
+    DSA,
+    FullStackDevelopment,
+    MachineLearning,
+    UiUx,
+    ARVR,
+    DroneEngineering,
+    RoboticsEngineering,
+    Maaif,
+    Maccf,
+    Macsf,
+    Madsf,
+    HrManagement,
+    StockMarketing,
+    Finance,
+    DigitalMarketing,
+    GraphicDesign,
+    CorporateLaw,
+    // ADDED: The missing Microsoft Azure imports as exports
+    
     // Company Logos
     microsoft_logo,
     walmart_logo,
@@ -101,7 +129,7 @@ export const assets = {
     course_1_thumbnail,
     course_2_thumbnail,
     course_3_thumbnail,
-    course_4_thumbnail, // Kept course_4_thumbnail for clarity
+    course_4_thumbnail,
 
     // Rating & Profile Images
     star,
