@@ -3,7 +3,15 @@ import logo_dark from './logo_dark.svg'
 import search_icon from './search_icon.svg'
 import cross_icon from './cross_icon.svg'
 import upload_area from './upload_area.svg'
-// FIX: Changed './sketch.svg' to './sktech.svg' to match the file on disk
+import AndroidAppDevelopment from './AndroidAppDevelopment.jpg'
+import ArtificialIntelligence from './ArtificialIntelligence.jpg' // Added to export
+import CloudComputing from './CloudComputing.jpg' // Added to export
+import CyberSecurity from './CyberSecurity.jpg' // Added to export
+import DataScience from './DataScience.jpg' // Added to export
+import DSA from './DSA.jpg' // Added to export
+import FullStackDevelopment from './FullStackDevelopment.jpg' // Added to export
+import MachineLearning from './MachineLearning.jpg' // Added to export
+import UiUx from './UiUx.jpg' // Added to export
 import sketch from './sktech.svg' 
 import heroVideo from './herobg.mp4' 
 import microsoft_logo from './microsoft_logo.svg'
@@ -21,7 +29,7 @@ import tesla_logo from './tesla_logo.png'
 import course_1_thumbnail from './course_1.png'
 import course_2_thumbnail from './course_2.png'
 import course_3_thumbnail from './course_3.png'
-import course_4_thumbnail from './course_4.png'
+import course_4_thumbnail from './course_4.png' // Kept this one, removed duplicate 'course_4'
 import star from './rating_star.svg'
 import star_blank from './star_dull_icon.svg'
 import profile_img_1 from './profile_img_1.png'
@@ -46,7 +54,6 @@ import dropdown_icon from './dropdown_icon.svg'
 import patients_icon from './patients_icon.svg'
 import play_icon from './play_icon.svg'
 import blue_tick_icon from './blue_tick_icon.svg'
-import course_4 from './course_4.png'
 import profile_img from './profile_img.png'
 import profile_img2 from './profile_img2.png'
 import profile_img3 from './profile_img3.png'
@@ -54,14 +61,33 @@ import lesson_icon from './lesson_icon.svg'
 
 
 export const assets = {
+    // Logo & Icons
     logo,
+    logo_dark,
     search_icon,
+    cross_icon,
+    upload_area,
     sketch,
+
+    // Videos
     heroVideo,
-    CourseSection_bg,
     CallToActionVideo, 
-    companiesVideo, // <--- NEW EXPORT ADDED
+    companiesVideo,
     getstartedVideo,
+
+    // Course Section & Category Images
+    CourseSection_bg,
+    AndroidAppDevelopment,
+    ArtificialIntelligence, // ADDED
+    CloudComputing, // ADDED
+    CyberSecurity, // ADDED
+    DataScience, // ADDED
+    DSA, // ADDED
+    FullStackDevelopment, // ADDED
+    MachineLearning, // ADDED
+    UiUx, // ADDED
+
+    // Company Logos
     microsoft_logo,
     walmart_logo,
     accenture_logo,
@@ -70,20 +96,25 @@ export const assets = {
     google_logo,
     amazon_logo,
     tesla_logo,
+
+    // Course Thumbnails
     course_1_thumbnail,
     course_2_thumbnail,
     course_3_thumbnail,
-    course_4_thumbnail,
+    course_4_thumbnail, // Kept course_4_thumbnail for clarity
+
+    // Rating & Profile Images
     star,
     star_blank,
+    profile_img,
+    profile_img2,
+    profile_img3,
     profile_img_1,
     profile_img_2,
     profile_img_3,
+
+    // Utility Icons
     arrow_icon,
-    dropdown_icon,
-    cross_icon,
-    upload_area,
-    logo_dark,
     down_arrow_icon,
     time_left_clock_icon,
     time_clock_icon,
@@ -95,17 +126,14 @@ export const assets = {
     facebook_icon,
     instagram_icon,
     twitter_icon,
-    course_4,
     file_upload_icon,
     appointments_icon,
     earning_icon,
+    dropdown_icon,
     patients_icon,
-    profile_img,
-    profile_img2,
-    profile_img3,
     play_icon,
     blue_tick_icon,
-    lesson_icon
+    lesson_icon,
 }
 
 export const dummyTestimonial = [

@@ -1,4 +1,4 @@
-// src/pages/educator/AddCourse.jsx (Reverted/Initial)
+// src/pages/educator/AddCourse.jsx
 
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { assets } from '../../assets/assets';
@@ -161,15 +161,22 @@ const AddCourse = () => {
 
     // Use a different outer container to set the background
     return (
-        <div className='min-h-screen bg-amber-50 md:p-10 p-4'>
+        // -------------------------------------------------------------------------
+        // MODIFIED: Background Gradient (Dark Red at bottom, Dark Blue at top, direct mix in middle)
+        // -------------------------------------------------------------------------
+        <div 
+            className='min-h-screen md:p-10 p-4'
+            style={{ backgroundImage: 'linear-gradient(to top, #000041, #410000)' }}
+        >
 
-            <h1 className="text-2xl font-bold text-gray-800 mb-6">Add New Project</h1>
+            {/* Changed main heading color to white for contrast */}
+            <h1 className="text-2xl font-bold text-white mb-6">Add New Project</h1>
 
-            {/* Main Form Container - Added professional styling */}
+            {/* Main Form Container - Retained white background for form readability */}
             <div className='bg-white p-8 rounded-xl shadow-xl max-w-2xl w-full mx-auto
-                            transform hover:scale-[1.01]
-                            hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)]
-                            transition-all duration-300 ease-in-out'>
+                                transform hover:scale-[1.01]
+                                hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)]
+                                transition-all duration-300 ease-in-out'>
 
                 <form onSubmit={handleSubmit} className='flex flex-col gap-6 w-full text-gray-600'>
 

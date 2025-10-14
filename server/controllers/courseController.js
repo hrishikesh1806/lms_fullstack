@@ -43,3 +43,14 @@ export const getCourseId = async (req, res) => {
     }
 
 } 
+
+
+// Delete All Courses
+export const deleteAllCourse = async (req, res) => {
+    try {
+        await Course.deleteMany({});
+        res.json({ success: true, message: 'All courses deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Error deleting courses', error });
+    }
+};
