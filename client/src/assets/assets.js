@@ -26,6 +26,31 @@ import Finance from './Finance.jpg'
 import GraphicDesign from './GraphicDesign.jpg'
 import HrManagement from './HRManagement.jpg'
 import StockMarketing from './StockMarketing.jpg'
+import AutoCAD from './AutoCAD.jpg'
+import ClientConnectCRM from './ClientConnectCRM.jpg'
+import DealFlowTracker from './DealFlowTracker.jpg'
+import EmbeddedSystem from './EmbeddedSystem.jpg'
+import HybridAndElectricVehicles from './HybridAndElectricVehicles.jpg'
+import IOT from './IOT.jpg'
+import LeadBoostPro from './LeadBoostPro.jpg'
+import Opportunity360 from './Opportunity360.jpg'
+import PipelineMaster from './PipelineMaster.jpg'
+import QuoteQuickSystem from './QuoteQuickSystem.jpg'
+import Robotics from './Robotics.jpg'
+import SalesForceX from './SalesForceX.jpg'
+import SalesPulseDashboard from'./SalesPulseDashboard.jpg'
+import SmartLeadCRM from './SmartLeadCRM.jpg'
+import CustomerCareCloud from './CustomerCareCloud.jpg'
+import SLAMonitor from './SLAMonitor.jpg'
+import TicketMaster360 from './TicketMaster360.jpg'
+import FeedbackFusion from './FeedbackFusion.jpg'
+import ServiceHub from './ServiceHub.jpg'
+import AssistsBotAi from './AssistsBotAi.jpg'
+import ResolveltCRM from './ResolveltCRM.jpg'
+import HelpDesk360 from './HelpDesk360.jpg'
+import CasePro from './CasePro.jpg'
+import SupportEase from './SupportEase.jpg'
+
 import sketch from './sktech.svg' 
 import heroVideo from './herobg.mp4' 
 import microsoft_logo from './microsoft_logo.svg'
@@ -82,6 +107,31 @@ export const assets = {
     cross_icon,
     upload_area,
     sketch,
+    EmbeddedSystem,
+    HybridAndElectricVehicles,
+    LeadBoostPro,
+    SalesPulseDashboard,
+    Opportunity360,
+    SmartLeadCRM,
+    SalesForceX,
+    PipelineMaster,
+    IOT,
+    QuoteQuickSystem,
+    Robotics,
+    CustomerCareCloud,
+    SLAMonitor,
+    TicketMaster360,
+    FeedbackFusion,
+    ServiceHub,
+    AssistsBotAi,
+    ResolveltCRM,
+    HelpDesk360,
+    CasePro,
+    SupportEase,
+
+
+    
+
 
     // Videos
     heroVideo,
@@ -112,7 +162,10 @@ export const assets = {
     Finance,
     DigitalMarketing,
     GraphicDesign,
+    AutoCAD,
+    ClientConnectCRM,
     CorporateLaw,
+    DealFlowTracker,
     // ADDED: The missing Microsoft Azure imports as exports
     
     // Company Logos
