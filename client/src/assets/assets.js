@@ -50,6 +50,26 @@ import ResolveltCRM from './ResolveltCRM.jpg'
 import HelpDesk360 from './HelpDesk360.jpg'
 import CasePro from './CasePro.jpg'
 import SupportEase from './SupportEase.jpg'
+import BrandBoostTracker from './BrandBoostTracker.jpg'
+import RetainProCRM from './RetainProCRM.jpg'
+import JourneyBuilderX from './JourneyBuilderX.jpg'
+import SocialEngageCloud from './SocialEngageCloud.jpg'
+import MailForceAutomation from './MailForceAutomation.jpg'
+import LeadGenStudio  from './LeadGenStudio.jpg'
+import CustomerReachPro from './CustomerReachPro.jpg'
+import AdFlowOptimizer from './AdFlowOptimizer.jpg'
+import CampaignHub from './CampaignHub.jpg'
+import MarketingMindAi from './MarketingMindAi.jpg'
+import SkillmapSystem from './SkillmapSystem.jpg'
+import PayForceHRMS from './PayForceHRMS.jpg'
+import AttendancePro from './AttendancePro.jpg'
+import PerformXPortal from './PerformXPortal.jpg'
+import TimeLogix from './TimeLogix.jpg'
+import OnboardEase from './OnboardEase.jpg'
+import WorkForce360 from './WorkForce360.jpg'
+import TeamTrack from './TeamTrack.jpg'
+import RecruitPro from './RecruitPro.jpg'
+import HRForce from './HRForce.jpg'
 
 import sketch from './sktech.svg' 
 import heroVideo from './herobg.mp4' 
@@ -128,6 +148,28 @@ export const assets = {
     HelpDesk360,
     CasePro,
     SupportEase,
+    BrandBoostTracker,
+    RetainProCRM,
+    JourneyBuilderX,
+    SocialEngageCloud,
+    MailForceAutomation,
+    LeadBoostPro,
+    CustomerReachPro,
+    AdFlowOptimizer,
+    CampaignHub,
+    MarketingMindAi,
+    BusinessAnalytics,
+    LeadGenStudio,
+    SkillmapSystem,
+    PayForceHRMS,
+    AttendancePro,
+    PerformXPortal,
+    TimeLogix,
+    OnboardEase,
+    WorkForce360,
+    TeamTrack,
+    RecruitPro,
+    HRForce,
 
 
     
