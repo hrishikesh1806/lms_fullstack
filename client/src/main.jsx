@@ -1,35 +1,42 @@
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import { BrowserRouter } from 'react-router-dom'
-import { AppContextProvider } from './context/AppContext.jsx'
-import { ClerkProvider } from '@clerk/clerk-react'
-import brandLogoUrl from './assets/brand_logo.png'
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import App from './App.jsx';
+import { BrowserRouter } from 'react-router-dom';
+import { AppContextProvider } from './context/AppContext.jsx';
+import brandLogoUrl from './assets/brand_logo.png';
 
-// Import your publishable key
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+// =============================================
+// 🧱 Clerk Setup (Commented Out for Manual Users)
+// =============================================
+// import { ClerkProvider } from '@clerk/clerk-react';
+// const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
-if (!PUBLISHABLE_KEY) {
-  throw new Error("Missing Publishable Key")
-}
+// if (!PUBLISHABLE_KEY) {
+//   throw new Error("Missing Clerk Publishable Key");
+// }
 
+// =============================================
+// ✅ Render App for MANUAL AUTH SYSTEM
+// =============================================
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+    {/* <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/"> */}
       <AppContextProvider>
         <App />
       </AppContextProvider>
-    </ClerkProvider>
-  </BrowserRouter>,
-)
+    {/* </ClerkProvider> */}
+  </BrowserRouter>
+);
 
+// =============================================
+// ✅ Set Favicon Dynamically
+// =============================================
 const favicon = document.querySelector('link[rel="icon"]');
 
 if (favicon) {
   favicon.href = brandLogoUrl;
-  favicon.type = 'image/png'; // Since your logo is a .png
+  favicon.type = 'image/png';
 } else {
-  // Fallback if the link tag wasn't in index.html, though yours is!
   const newFavicon = document.createElement('link');
   newFavicon.rel = 'icon';
   newFavicon.type = 'image/png';

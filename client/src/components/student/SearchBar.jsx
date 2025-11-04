@@ -32,12 +32,13 @@ const SearchBar = ({ data, className }) => {
             />
 
             {/* Input Field: bg-transparent makes it see-through */}
-            <input 
-                onChange={e => setInput(e.target.value)} 
-                value={input} 
-                type="text" 
-                className="w-full h-full outline-none bg-transparent text-white placeholder-white/80" 
-                placeholder="Search for projects" 
+            <input
+                onChange={e => setInput(e.target.value)}
+                value={input}
+                type="text"
+                id="search"
+                className="w-full h-full outline-none bg-transparent text-white placeholder-white/80"
+                placeholder="Search for projects"
             />
             
             {/* Search Button: Updated to orange accent color */}

@@ -1,273 +1,206 @@
-import React, { useContext, useCallback, useState, useRef, useEffect } from 'react';
-import { assets } from '../../assets/assets';
-import { Link, useLocation } from 'react-router-dom';
-import { AppContext } from '../../context/AppContext';
-import { useClerk, UserButton, useUser } from '@clerk/clerk-react'; 
-import { toast } from 'react-toastify';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import brandLogo from "../../assets/brand_logo.png";
 
-const Navbar = () => {
+const Navbar = ({ onRegisterClick }) => {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-    const [showLoginOptions, setShowLoginOptions] = useState(null); 
-    const dropdownRef = useRef(null);
-    const location = useLocation();
-    const { backendUrl, isEducator, setIsEducator, navigate, getToken } = useContext(AppContext);
-    const { openSignIn, openSignUp, signOut } = useClerk(); 
-    const { isSignedIn } = useUser(); 
+  // --- Constants for Styling ---
+  const PRIMARY_COLOR = "#FF7F00"; // Bright Orange
+  const PRIMARY_HOVER_COLOR = "#E66700"; // Darker Orange for hover
+  
+  const TEXT_COLOR = "#ffffff"; // White text for visibility
+  const INDIGO_COLOR = "#4B0082"; // Indigo (Dark)
+  // 🚨 CHANGED: Standard Blue for the left side of the gradient
+  const SKY_BLUE = "#1E90FF"; // Dodger Blue 
+  const SECONDARY_COLOR = "#ffffff"; // Secondary button border/text set to white
 
-    // Handle outside clicks to close the dropdown
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setShowLoginOptions(null);
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [dropdownRef]);
-
-
-    // Role-Specific Authentication Handlers
-    const handleAuth = (type, rolePath) => {
-        setShowLoginOptions(null); 
-        const redirectPath = `${window.location.origin}${rolePath}`; 
-        
-        if (type === 'login') {
-            openSignIn({ redirectUrl: redirectPath });
-        } else if (type === 'signup') {
-            openSignUp({ redirectUrl: redirectPath });
-        }
+  useEffect(() => {
+    const loadUser = () => {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      if (storedUser) {
+        setUser({ ...storedUser, role: storedUser.role?.toLowerCase() });
+      } else {
+        setUser(null);
+      }
     };
+    loadUser();
+    window.addEventListener("storage", loadUser);
+    return () => window.removeEventListener("storage", loadUser);
+  }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("userRole");
+    setUser(null);
+    navigate("/");
+  };
 
-    const becomeEducator = useCallback(async () => {
-        try {
-            if (!isSignedIn) {
-                 toast.error('Please log in first to become an educator.');
-                 return;
-            }
-            if (isEducator) {
-                navigate('/educator');
-                return;
-            }
-            
-            // This entire block is now functionally redundant if the button is hidden from students.
-            // However, we keep the role update logic in case you add another link elsewhere later.
-            const token = await getToken();
-            const apiUrl = backendUrl + '/api/educator/update-role';
-            
-            const { data } = await axios.get(apiUrl, { 
-                headers: { Authorization: `Bearer ${token}` } 
-            });
+  // --- Inline Styles ---
+  const containerStyle = {
+    position: "sticky",
+    top: 0,
+    zIndex: 1000,
+    // The gradient now goes from standard blue to indigo
+    background: `linear-gradient(to right, ${SKY_BLUE}, ${INDIGO_COLOR})`,
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+  };
 
-            if (data.success) {
-                toast.success(data.message);
-                setIsEducator(true); 
-                navigate('/educator');
-            } else {
-                toast.error(data.message);
-            }
+  const contentStyle = {
+    maxWidth: "1200px",
+    margin: "0 auto",
+    padding: "0 20px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: "70px",
+  };
+  
+  const logoWrapperStyle = {
+    position: 'relative',
+    width: '80px', // Logo size
+    padding: '4px',
+    borderRadius: '6px',
+    backgroundColor: 'white',
+    boxShadow: `0 0 10px rgba(255, 255, 255, 0.4)`,
+    transition: 'all 500ms ease-in-out',
+    cursor: 'pointer',
+    marginBottom: 0,
+  };
 
-        } catch (error) {
-            toast.error(error.response?.data?.message || 'Failed to update role.');
-        }
-    }, [isEducator, navigate, getToken, backendUrl, setIsEducator, isSignedIn]);
+  const logoImageStyle = {
+    width: "100%",
+    height: "auto",
+    display: "block",
+  };
 
-    // Style variables
-    const orangeButtonBaseClass = "bg-orange-500 hover:bg-orange-600 transition duration-300 text-white font-semibold rounded-full";
-    const navButtonClass = `${orangeButtonBaseClass} px-3 py-1 text-sm`;
-    const signInButtonClass = `${orangeButtonBaseClass} px-5 py-2 text-sm shadow-lg hover:shadow-orange-400/50 hover:scale-[1.05]`;
-    const secondaryAuthButtonClass = "bg-blue-600 hover:bg-blue-700 transition duration-300 text-white font-semibold rounded-full px-3 py-2 text-sm";
+  const menuStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "20px",
+  };
+  
+  const linkBaseStyle = {
+    textDecoration: "none",
+    fontSize: "1rem",
+    fontWeight: 500,
+    padding: "8px 12px",
+    borderRadius: "4px",
+    transition: "all 0.2s ease-in-out",
+    color: TEXT_COLOR,
+  };
 
+  const primaryButtonBaseStyle = {
+    ...linkBaseStyle,
+    cursor: "pointer",
+    border: `1px solid ${PRIMARY_COLOR}`,
+    backgroundColor: PRIMARY_COLOR,
+    color: "#ffffff",
+    fontWeight: 600,
+    padding: "10px 18px",
+    borderRadius: "20px",
+  };
 
-    return (
-        <> 
-            {/* NAVBAR CONTAINER */}
-            <div className={`fixed top-0 z-50 w-full flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-36 border-b border-pink-700 py-2 
-                             bg-gray-900 
-                             bg-gradient-to-l from-gray-950 to-blue-700 
-                             shadow-2xl ring-1 ring-white/10 
-                             shadow-[-5px_15px_15px_-5px_rgba(0,0,0,0.6)]`}
-            >
-                
-                {/* Logo Wrapper (Static) */}
-                <div 
-                    onClick={() => navigate('/')} 
-                    className="relative z-10 w-28 lg:w-32 cursor-pointer transition duration-500 hover:scale-[1.05] active:scale-[0.98] 
-                                 rounded-md p-1 bg-white shadow-lg shadow-white/40" 
-                >
-                    <img src={assets.logo} alt="Logo" className="w-full" />
-                </div>
-                
-                {/* Desktop Navigation (z-10) */}
-                <div className="relative z-10 md:flex hidden items-center gap-5">
+  const secondaryButtonBaseStyle = {
+    ...linkBaseStyle,
+    cursor: "pointer",
+    border: `1px solid ${SECONDARY_COLOR}`, 
+    backgroundColor: "transparent",
+    color: SECONDARY_COLOR,
+    fontWeight: 600,
+    padding: "8px 16px",
+  };
 
-                    {/* Left side actions (Educator / Enrollments) - Only visible when signed in */}
-                    {isSignedIn && (
-                        <div className="flex items-center gap-5">
-                            
-                            {/* NEW LOGIC: ONLY SHOW IF THE USER IS ALREADY AN EDUCATOR */}
-                            {isEducator && (
-                                <>
-                                    <button 
-                                        type="button" 
-                                        onClick={becomeEducator} // This will now only navigate to /educator
-                                        className={navButtonClass} 
-                                    >
-                                        Educator Dashboard
-                                    </button>
-                                    <span className="text-white/50">|</span> 
-                                </>
-                            )}
-                            {/* END NEW LOGIC */}
-                            
-                            <Link 
-                                to='/my-enrollments' 
-                                className={location.pathname === '/my-enrollments' ? `${navButtonClass} bg-orange-600` : navButtonClass}
-                            >
-                                My Enrollments
-                            </Link>
-                        </div>
-                    )}
-                    
-                    {/* User Authentication Status (Login/Logout buttons remain correct) */}
-                    <div className='flex items-center gap-3'>
-                        {!isSignedIn 
-                            ? (
-                                // Logged OUT
-                                <div className='relative' ref={dropdownRef}>
-                                    <div className='flex items-center gap-3'>
-                                        <button 
-                                            type="button" 
-                                            onClick={() => setShowLoginOptions(showLoginOptions === 'signup' ? null : 'signup')} 
-                                            className={secondaryAuthButtonClass} 
-                                        >
-                                            Create Account
-                                        </button>
-                                        <button 
-                                            type="button" 
-                                            onClick={() => setShowLoginOptions(showLoginOptions === 'login' ? null : 'login')} 
-                                            className={signInButtonClass} 
-                                        >
-                                            Login
-                                        </button>
-                                    </div>
-                                    {/* ROLE SELECTION DROPDOWN */}
-                                    {showLoginOptions && (
-                                        <div className='absolute right-0 mt-3 w-48 bg-gray-800 rounded-md shadow-xl overflow-hidden z-20 border border-orange-500 transition-opacity duration-300 animate-in fade-in-0 zoom-in-95'>
-                                            <div className='p-2 text-white/80 font-bold border-b border-white/10'>
-                                                {showLoginOptions === 'login' ? 'Login As' : 'Create Account As'}
-                                            </div>
-                                            <div className='flex flex-col gap-1 p-2'>
-                                                <button
-                                                    onClick={() => handleAuth(showLoginOptions, '/')}
-                                                    className="w-full text-left px-3 py-2 text-sm text-white hover:bg-orange-600 rounded-md transition duration-200"
-                                                >
-                                                    {showLoginOptions === 'login' ? 'Student Login' : 'Student Account'}
-                                                </button>
-                                                <button
-                                                    onClick={() => handleAuth(showLoginOptions, '/educator')}
-                                                    className="w-full text-left px-3 py-2 text-sm text-white hover:bg-orange-600 rounded-md transition duration-200"
-                                                >
-                                                    {showLoginOptions === 'login' ? 'Educator Login' : 'Educator Account'}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            )
-                            : (
-                                // Logged IN
-                                <>
-                                    <button
-                                        type="button"
-                                        onClick={() => signOut()}
-                                        className={secondaryAuthButtonClass} 
-                                    >
-                                        Logout
-                                    </button>
-                                    <UserButton 
-                                        appearance={{ 
-                                            elements: { 
-                                                userButtonAvatarBox: "w-10 h-10 ring-2 ring-orange-400 transition duration-300 hover:ring-white" 
-                                            } 
-                                        }} 
-                                    />
-                                </>
-                            )
-                        }
-                    </div>
-                </div>
-                
-                {/* Mobile Navigation (z-10) */}
-                <div className='relative z-10 md:hidden flex items-center gap-2 sm:gap-5'>
-                    
-                    {isSignedIn && (
-                        <div className="flex items-center gap-1 sm:gap-2 max-sm:text-xs">
-                            
-                            {/* NEW LOGIC: Mobile - ONLY SHOW IF THE USER IS ALREADY AN EDUCATOR */}
-                            {isEducator && (
-                                <>
-                                    <button 
-                                        type="button" 
-                                        onClick={becomeEducator} 
-                                        className={navButtonClass}
-                                    >
-                                        Educator
-                                    </button>
-                                    <span className="text-white/50">|</span>
-                                </>
-                            )}
-                            {/* END NEW LOGIC */}
-                            
-                            <Link 
-                                to='/my-enrollments' 
-                                className={navButtonClass}
-                            >
-                                Enrollments
-                            </Link>
-                        </div>
-                    )}
-                    
-                    {isSignedIn
-                        ? (
-                            // Logged In
-                            <>
-                                <button 
-                                    type="button" 
-                                    onClick={() => signOut()} 
-                                    aria-label="Logout"
-                                    className="transition duration-300 hover:scale-110 active:scale-90"
-                                >
-                                    <img src={assets.logout_icon} alt="Logout icon" className="w-6 h-6 filter invert" /> 
-                                </button>
-                                <UserButton 
-                                    appearance={{ 
-                                        elements: { 
-                                            userButtonAvatarBox: "w-8 h-8 ring-2 ring-orange-400 transition duration-300 hover:ring-white" 
-                                        } 
-                                    }} 
-                                />
-                            </>
-                        )
-                        : (
-                            // Logged Out
-                            <button 
-                                type="button" 
-                                onClick={() => openSignIn({ redirectUrl: `${window.location.origin}/` })} 
-                                aria-label="Log In / Create Account"
-                                className="transition duration-300 hover:scale-110 active:scale-90"
-                            >
-                                <img src={assets.user_icon} alt="User icon" className="w-6 h-6 filter invert" /> 
-                            </button>
-                        )
-                    }
-                </div>
+  // --- Style Block (for keyframes and :hover effects) ---
+  const styleSheet = `
+    @keyframes pulse-slow {
+      0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.2); }
+      50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.3); }
+    }
+
+    .logo-wrapper {
+      animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite; 
+    }
+
+    .logo-wrapper:hover {
+      transform: scale(1.08) rotate(1deg);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 20px ${SKY_BLUE};
+      animation-play-state: paused;
+    }
+
+    .nav-link:hover {
+      color: ${SKY_BLUE} !important; 
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .primary-button:hover {
+      background-color: ${PRIMARY_HOVER_COLOR} !important; 
+      border-color: ${PRIMARY_HOVER_COLOR} !important;
+      box-shadow: 0 4px 10px rgba(255, 127, 0, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .secondary-button:hover {
+      color: ${INDIGO_COLOR} !important; 
+      background-color: ${SECONDARY_COLOR} !important;
+      border-color: ${SECONDARY_COLOR} !important;
+      transform: translateY(-2px);
+    }
+  `;
+
+  return (
+    <>
+      <style>{styleSheet}</style>
+
+      <header style={containerStyle}>
+        <nav style={contentStyle}>
+          <Link to="/">
+            <div className="logo-wrapper" style={logoWrapperStyle}>
+                <img src={brandLogo} alt="Brand Logo" style={logoImageStyle} />
             </div>
-        </>
-    );
+          </Link>
+
+          <div style={menuStyle}>
+            <Link to="/" className="nav-link" style={linkBaseStyle}>
+              Home
+            </Link>
+
+            {!user && (
+              <>
+                <Link
+                  to="/register"
+                  className="nav-button primary-button"
+                  style={primaryButtonBaseStyle}
+                >
+                  Create Account
+                </Link>
+              </>
+            )}
+
+            {user && (
+              <>
+                {user.role === "user" && (
+                  <Link to="/my-enrollments" className="nav-link" style={linkBaseStyle}>
+                    My Enrollments
+                  </Link>
+                )}
+
+                <button
+                  onClick={handleLogout}
+                  className="nav-button secondary-button"
+                  style={secondaryButtonBaseStyle}
+                >
+                  Logout
+                </button>
+              </>
+            )}
+          </div>
+        </nav>
+      </header>
+    </>
+  );
 };
 
 export default Navbar;

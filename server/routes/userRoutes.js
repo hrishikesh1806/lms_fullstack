@@ -1,15 +1,24 @@
-import express from 'express'
-import { addUserRating, getUserCourseProgress, getUserData, purchaseCourse, updateUserCourseProgress, userEnrolledCourses } from '../controllers/userController.js';
+import express from "express";
+import { protectUser } from "../middlewares/authMiddleware.js";
+import {
+  getUserProfile,
+  updateUserProfile,
+  getUserEnrolledCourses,
+  purchaseCourse,
+  confirmPayment,
+} from "../controllers/userController.js";
 
+const router = express.Router();
 
-const userRouter = express.Router()
+// User profile routes
+router.get("/profile", protectUser, getUserProfile);
+router.put("/update", protectUser, updateUserProfile);
+router.get("/enrolled", protectUser, getUserEnrolledCourses);
+router.get("/data", protectUser, getUserProfile);
+router.get("/enrolled-courses", protectUser, getUserEnrolledCourses);
 
-// Get user Data
-userRouter.get('/data', getUserData)
-userRouter.post('/purchase', purchaseCourse)
-userRouter.get('/enrolled-courses', userEnrolledCourses)
-userRouter.post('/update-course-progress', updateUserCourseProgress)
-userRouter.post('/get-course-progress', getUserCourseProgress)
-userRouter.post('/add-rating', addUserRating)
+// Purchase routes
+router.post("/purchase", protectUser, purchaseCourse);
+router.post("/confirm-payment", protectUser, confirmPayment);
 
-export default userRouter;
+export default router;

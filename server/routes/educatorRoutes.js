@@ -1,25 +1,41 @@
-import express from 'express'
-import { addCourse, educatorDashboardData, getEducatorCourses, getEnrolledStudentsData, updateRoleToEducator } from '../controllers/educatorController.js';
+import express from 'express';
+import {
+  addCourse,
+  educatorDashboardData,
+  getEducatorCourses,
+  getEnrolledStudentsData,
+  updateRoleToEducator
+} from '../controllers/educatorController.js';
 import upload from '../configs/multer.js';
-import { protectEducator } from '../middlewares/authMiddleware.js';
+import { protectUser, protectEducator } from '../middlewares/authMiddleware.js';
 
+const educatorRouter = express.Router();
 
-const educatorRouter = express.Router()
+/* ==========================================================
+   🧑‍🏫 EDUCATOR ROLE MANAGEMENT
+   ========================================================== */
+// Upgrade a normal user to educator
+educatorRouter.get('/update-role', protectUser, updateRoleToEducator);
 
-// Add Educator Role 
-educatorRouter.get('/update-role', updateRoleToEducator)
+/* ==========================================================
+   📘 COURSE MANAGEMENT (Educator)
+   ========================================================== */
+// Add a new course (thumbnail upload supported)
+educatorRouter.post('/add-course', protectUser, upload.single('image'), addCourse);
 
-// Add Courses 
-educatorRouter.post('/add-course', upload.single('image'), protectEducator, addCourse)
+// Get all courses created by the logged-in educator
+educatorRouter.get('/courses', protectUser, getEducatorCourses);
 
-// Get Educator Courses 
-educatorRouter.get('/courses', protectEducator, getEducatorCourses)
+/* ==========================================================
+   📊 EDUCATOR DASHBOARD
+   ========================================================== */
+// Get educator dashboard summary (requires educator role)
+educatorRouter.get('/dashboard', protectUser, protectEducator, educatorDashboardData);
 
-// Get Educator Dashboard Data
-educatorRouter.get('/dashboard', protectEducator, educatorDashboardData)
-
-// Get Educator Students Data
-educatorRouter.get('/enrolled-students', protectEducator, getEnrolledStudentsData)
-
+/* ==========================================================
+   👩‍🎓 ENROLLED STUDENTS
+   ========================================================== */
+// Get all students enrolled in educator’s courses
+educatorRouter.get('/enrolled-students', protectUser, getEnrolledStudentsData);
 
 export default educatorRouter;

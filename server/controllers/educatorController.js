@@ -1,161 +1,176 @@
-import { v2 as cloudinary } from 'cloudinary'
-import Course from '../models/Course.js';
-import { Purchase } from '../models/Purchase.js';
-import User from '../models/User.js';
-import { clerkClient } from '@clerk/express'
+// server/controllers/educatorController.js
 
-// update role to educator
+import { v2 as cloudinary } from "cloudinary";
+import Course from "../models/Course.js";
+import { Purchase } from "../models/Purchase.js";
+import ManualUser from "../models/Usermodel.js";
+
+/* ==========================================================
+   🔄 Update Role to Educator (ManualUser only)
+   ========================================================== */
 export const updateRoleToEducator = async (req, res) => {
+  try {
+    const userId = req.user?._id;
 
-    try {
-
-        const userId = req.auth.userId
-
-        await clerkClient.users.updateUserMetadata(userId, {
-            publicMetadata: {
-                role: 'educator',
-            },
-        })
-
-        res.json({ success: true, message: 'You can publish a course now' })
-
-    } catch (error) {
-        res.json({ success: false, message: error.message })
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized: user not found" });
     }
 
-}
-
-// Add New Course
-export const addCourse = async (req, res) => {
-
-    try {
-
-        const { courseData } = req.body
-
-        const imageFile = req.file
-
-        const educatorId = req.auth.userId
-
-        if (!imageFile) {
-            return res.json({ success: false, message: 'Thumbnail Not Attached' })
-        }
-
-        const parsedCourseData = await JSON.parse(courseData)
-
-        parsedCourseData.educator = educatorId
-
-        const newCourse = await Course.create(parsedCourseData)
-
-        const imageUpload = await cloudinary.uploader.upload(imageFile.path)
-
-        newCourse.courseThumbnail = imageUpload.secure_url
-
-        await newCourse.save()
-
-        res.json({ success: true, message: 'Course Added' })
-
-    } catch (error) {
-
-        res.json({ success: false, message: error.message })
-
+    const user = await ManualUser.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
     }
-}
 
-// Get Educator Courses
-export const getEducatorCourses = async (req, res) => {
-    try {
+    user.role = "educator";
+    await user.save();
 
-        const educator = req.auth.userId
-
-        const courses = await Course.find({ educator })
-
-        res.json({ success: true, courses })
-
-    } catch (error) {
-        res.json({ success: false, message: error.message })
-    }
-}
-
-// Get Educator Dashboard Data ( Total Earning, Enrolled Students, No. of Courses)
-export const educatorDashboardData = async (req, res) => {
-    try {
-        const educator = req.auth.userId;
-
-        const courses = await Course.find({ educator });
-
-        const totalCourses = courses.length;
-
-        const courseIds = courses.map(course => course._id);
-
-        // Calculate total earnings from purchases
-        const purchases = await Purchase.find({
-            courseId: { $in: courseIds },
-            status: 'completed'
-        });
-
-        const totalEarnings = purchases.reduce((sum, purchase) => sum + purchase.amount, 0);
-
-        // Collect unique enrolled student IDs with their course titles
-        const enrolledStudentsData = [];
-        for (const course of courses) {
-            const students = await User.find({
-                _id: { $in: course.enrolledStudents }
-            }, 'name imageUrl');
-
-            students.forEach(student => {
-                enrolledStudentsData.push({
-                    courseTitle: course.courseTitle,
-                    student
-                });
-            });
-        }
-
-        res.json({
-            success: true,
-            dashboardData: {
-                totalEarnings,
-                enrolledStudentsData,
-                totalCourses
-            }
-        });
-    } catch (error) {
-        res.json({ success: false, message: error.message });
-    }
+    res.json({ success: true, message: "You are now an educator and can publish courses" });
+  } catch (error) {
+    console.error("❌ updateRoleToEducator error:", error);
+    res.status(500).json({ success: false, message: "Failed to update role" });
+  }
 };
 
-// Get Enrolled Students Data with Purchase Data
-export const getEnrolledStudentsData = async (req, res) => {
-    try {
-        const educator = req.auth.userId;
+/* ==========================================================
+   🆕 Add New Course
+   ========================================================== */
+export const addCourse = async (req, res) => {
+  try {
+    const { courseData } = req.body;
+    const imageFile = req.file;
+    const educatorId = req.user?._id;
 
-        // Fetch all courses created by the educator
-        const courses = await Course.find({ educator });
-
-        // Get the list of course IDs
-        const courseIds = courses.map(course => course._id);
-
-        // Fetch purchases with user and course data
-        const purchases = await Purchase.find({
-            courseId: { $in: courseIds },
-            status: 'completed'
-        }).populate('userId', 'name imageUrl').populate('courseId', 'courseTitle');
-
-        // enrolled students data
-        const enrolledStudents = purchases.map(purchase => ({
-            student: purchase.userId,
-            courseTitle: purchase.courseId.courseTitle,
-            purchaseDate: purchase.createdAt
-        }));
-
-        res.json({
-            success: true,
-            enrolledStudents
-        });
-
-    } catch (error) {
-        res.json({
-            success: false,
-            message: error.message
-        });
+    if (!educatorId) {
+      return res.status(401).json({ success: false, message: "Unauthorized: educator not found" });
     }
+
+    if (!imageFile) {
+      return res.status(400).json({ success: false, message: "Thumbnail not attached" });
+    }
+
+    const parsedCourseData = JSON.parse(courseData);
+    parsedCourseData.educator = educatorId;
+
+    const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+      folder: "course_thumbnails",
+    });
+
+    const newCourse = await Course.create({
+      ...parsedCourseData,
+      courseThumbnail: imageUpload.secure_url,
+    });
+
+    res.json({ success: true, message: "Course added successfully", course: newCourse });
+  } catch (error) {
+    console.error("❌ addCourse error:", error);
+    res.status(500).json({ success: false, message: "Error adding course" });
+  }
+};
+
+/* ==========================================================
+   📘 Get Educator Courses
+   ========================================================== */
+export const getEducatorCourses = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
+
+    const educatorId = req.user._id;
+    const isAdmin = req.user.role === "admin";
+
+    const query = isAdmin ? {} : { educator: educatorId };
+    const courses = await Course.find(query).populate("educator", "name email");
+
+    res.json({ success: true, courses });
+  } catch (error) {
+    console.error("❌ getEducatorCourses error:", error);
+    res.status(500).json({ success: false, message: "Error fetching courses" });
+  }
+};
+
+/* ==========================================================
+   📊 Educator Dashboard Data
+   ========================================================== */
+export const educatorDashboardData = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
+
+    const educatorId = req.user._id;
+    const isAdmin = req.user.role === "admin";
+
+    const query = isAdmin ? {} : { educator: educatorId };
+    const courses = await Course.find(query);
+
+    const totalCourses = courses.length;
+
+    // ✅ Collect enrolled students from Purchase model
+    const courseIds = courses.map((c) => c._id);
+    const purchases = await Purchase.find({
+      courseId: { $in: courseIds },
+      status: "completed",
+    })
+      .populate("userId", "name imageUrl")
+      .populate("courseId", "courseTitle")
+      .sort({ createdAt: -1 })
+      .limit(10);
+
+    const enrolledStudentsData = purchases.map((p) => ({
+      courseTitle: p.courseId?.courseTitle || "Deleted Course",
+      student: p.userId,
+      enrolledDate: p.createdAt,
+    }));
+
+    // ✅ Calculate total earnings
+    const allPurchases = await Purchase.find({
+      courseId: { $in: courseIds },
+      status: "completed",
+    });
+
+    const totalEarnings = allPurchases.reduce((acc, p) => acc + (p.amount || 0), 0);
+
+    res.json({
+      success: true,
+      dashboardData: {
+        totalCourses,
+        enrolledStudentsData,
+        totalEarnings,
+      },
+    });
+  } catch (error) {
+    console.error("❌ educatorDashboardData error:", error);
+    res.status(500).json({ success: false, message: "Error fetching dashboard data" });
+  }
+};
+
+/* ==========================================================
+   👩‍🎓 Get Enrolled Students Data
+   ========================================================== */
+export const getEnrolledStudentsData = async (req, res) => {
+  try {
+    const educatorId = req.user._id;
+
+    const courses = await Course.find({ educator: educatorId });
+    const courseIds = courses.map((c) => c._id);
+
+    const purchases = await Purchase.find({
+      courseId: { $in: courseIds },
+      status: "completed",
+    })
+      .populate("userId", "name imageUrl")
+      .populate("courseId", "courseTitle");
+
+    const enrolledStudents = purchases.map((p) => ({
+      student: p.userId,
+      courseTitle: p.courseId?.courseTitle || "Deleted Course",
+      purchaseDate: p.createdAt,
+    }));
+
+    res.json({ success: true, enrolledStudents });
+  } catch (error) {
+    console.error("❌ getEnrolledStudentsData error:", error);
+    res.status(500).json({ success: false, message: "Error fetching enrolled students" });
+  }
 };

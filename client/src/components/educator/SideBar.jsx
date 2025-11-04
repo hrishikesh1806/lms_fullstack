@@ -6,7 +6,7 @@ import { AppContext } from '../../context/AppContext';
 
 const SideBar = () => {
 
-  const { isEducator } = useContext(AppContext);
+  const { isEducator, isAdmin } = useContext(AppContext);
 
   const menuItems = [
     { 
@@ -35,7 +35,7 @@ const SideBar = () => {
     },
   ];
 
-  return isEducator && (
+  return (isEducator || isAdmin) && (
     <div className='md:w-64 w-16 
             bg-gray-900 
             min-h-[calc(100vh-64px)] 

@@ -70,6 +70,26 @@ import WorkForce360 from './WorkForce360.jpg'
 import TeamTrack from './TeamTrack.jpg'
 import RecruitPro from './RecruitPro.jpg'
 import HRForce from './HRForce.jpg'
+import EduBridgeAI from './EduBridgeAI.jpg'
+import LearnForcePortal from './LearnForcePortal.jpg'
+import VolunteerPro from './VolunteerPro.jpg'
+import DonorConnect from './DonorConnect.jpg'
+import MediTrack360 from './MediTrack360.jpg'
+import CareForce from './CareForce.jpg'
+import HealthSync from './HealthSync.jpg'
+import StudentHubCloud from './StudentHubCloud.jpg'
+import SchoolSyncCRM from './SchoolSyncCRM.jpg'
+import EduConnect from './EduConnect.jpg'
+import LWCSmartApp from './LWCSmartApp.jpg'
+import APIConnectCloud from './APIConnectCloud.jpg'
+import SalesforceSandboxPro from './SalesforceSandboxPro.png'
+import ValidationX from './ValidationX.jpg'
+import DataFlowManager from './DataFlowManager.png'
+import TriggerTrack from './TriggerTrack.jpg'
+import DevOpsForce from './DevOpsForce.jpg'
+import EinsteinInsightHub from './EinsteinInsightHub.jpg'
+import FlowForce from './FlowForce.png'
+import ApexCRM from './ApexCRM.png'
 
 import sketch from './sktech.svg' 
 import heroVideo from './herobg.mp4' 
@@ -170,8 +190,26 @@ export const assets = {
     TeamTrack,
     RecruitPro,
     HRForce,
-
-
+    EduBridgeAI,
+    LearnForcePortal,
+    VolunteerPro,
+    DonorConnect,
+    MediTrack360,
+    CareForce,
+    HealthSync,
+    StudentHubCloud,
+    SchoolSyncCRM,
+    EduConnect,
+    LWCSmartApp,
+    APIConnectCloud,
+    SalesforceSandboxPro,
+    ValidationX,
+    DataFlowManager,
+    TriggerTrack,
+    DevOpsForce,
+    EinsteinInsightHub,
+    FlowForce,
+    ApexCRM,
     
 
 
