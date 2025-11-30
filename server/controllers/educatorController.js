@@ -151,14 +151,21 @@ export const educatorDashboardData = async (req, res) => {
 export const getEnrolledStudentsData = async (req, res) => {
   try {
     const educatorId = req.user._id;
+    const { courseId } = req.query; // Optional course filter
+    const isAdmin = req.user.role === "admin";
 
-    const courses = await Course.find({ educator: educatorId });
+    // For admin, get all courses; for educator, get their courses
+    const query = isAdmin ? {} : { educator: educatorId };
+    const courses = await Course.find(query);
     const courseIds = courses.map((c) => c._id);
 
-    const purchases = await Purchase.find({
-      courseId: { $in: courseIds },
+    // Filter by specific course if provided
+    const purchaseQuery = {
+      courseId: courseId ? courseId : { $in: courseIds },
       status: "completed",
-    })
+    };
+
+    const purchases = await Purchase.find(purchaseQuery)
       .populate("userId", "name imageUrl")
       .populate("courseId", "courseTitle");
 
@@ -168,7 +175,7 @@ export const getEnrolledStudentsData = async (req, res) => {
       purchaseDate: p.createdAt,
     }));
 
-    res.json({ success: true, enrolledStudents });
+    res.json({ success: true, enrolledStudents, courses });
   } catch (error) {
     console.error("❌ getEnrolledStudentsData error:", error);
     res.status(500).json({ success: false, message: "Error fetching enrolled students" });

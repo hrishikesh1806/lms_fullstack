@@ -46,6 +46,7 @@ const PaymentSuccess = () => {
         }
       } catch (err) {
         console.error("❌ Payment confirmation error:", err);
+        console.error("Error details:", err.response?.data || err.message);
         toast.error("Payment confirmation failed.");
         navigate("/");
       }

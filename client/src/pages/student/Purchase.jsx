@@ -69,6 +69,7 @@ const Purchase = () => {
       }
     } catch (error) {
       console.error("Purchase error:", error);
+      console.error("Purchase: Full error details:", error.response?.data || error.message);
       toast.error("Something went wrong while purchasing");
     } finally {
       setLoading(false);

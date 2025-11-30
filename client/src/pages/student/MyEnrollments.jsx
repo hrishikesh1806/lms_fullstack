@@ -22,6 +22,7 @@ const MyEnrollments = () => {
 
         await fetchUserEnrolledCourses();
         setLocalCourses(enrolledCourses || []);
+        console.log('Enrolled courses loaded:', enrolledCourses);
       } catch (error) {
         console.error('Error fetching enrolled courses:', error);
         toast.error('Failed to fetch enrolled courses');
@@ -113,93 +114,90 @@ const MyEnrollments = () => {
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: '#f5f7fa',
-        padding: '40px 60px',
-      }}
-    >
-      <button
-        onClick={handleBackToHome}
-        style={{
-          backgroundColor: '#4CAF50',
-          color: 'white',
-          border: 'none',
-          padding: '10px 20px',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          fontSize: '16px',
-          marginBottom: '20px',
-          boxShadow: '0 3px 6px rgba(0,0,0,0.2)',
-        }}
-      >
-        ← Back to Home
-      </button>
+    <div style={{ minHeight: '100vh', background: '#f5f7fa' }}>
+      <div style={{ padding: '40px 60px' }}>
+        <button
+          onClick={handleBackToHome}
+          style={{
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            padding: '10px 20px',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            marginBottom: '20px',
+            boxShadow: '0 3px 6px rgba(0,0,0,0.2)',
+          }}
+        >
+          ← Back to Home
+        </button>
 
-      <h2
-        style={{
-          textAlign: 'center',
-          marginBottom: '30px',
-          fontSize: '2rem',
-          color: '#1f2937',
-        }}
-      >
-        My Enrollments
-      </h2>
+        <h2
+          style={{
+            textAlign: 'center',
+            marginBottom: '30px',
+            fontSize: '2rem',
+            color: '#1f2937',
+          }}
+        >
+          My Enrollments
+        </h2>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          gap: '25px',
-        }}
-      >
-        {localCourses.map((course) => (
-          <div
-            key={course._id}
-            style={{
-              background: 'white',
-              borderRadius: '12px',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-              overflow: 'hidden',
-              transition: 'transform 0.3s ease',
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.transform = 'translateY(-5px)')}
-            onMouseOut={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
-          >
-            <img
-              src={course.thumbnail}
-              alt={course.title}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gap: '25px',
+            marginBottom: '40px',
+          }}
+        >
+          {localCourses.map((course) => (
+            <div
+              key={course._id}
               style={{
-                width: '100%',
-                height: '180px',
-                objectFit: 'cover',
+                background: 'white',
+                borderRadius: '12px',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+                overflow: 'hidden',
+                transition: 'transform 0.3s ease',
               }}
-            />
-            <div style={{ padding: '15px' }}>
-              <h3
+              onMouseOver={(e) => (e.currentTarget.style.transform = 'translateY(-5px)')}
+              onMouseOut={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
+            >
+              <img
+                src={course.courseThumbnail}
+                alt={course.courseTitle}
                 style={{
-                  fontSize: '1.2rem',
-                  marginBottom: '8px',
-                  color: '#111827',
+                  width: '100%',
+                  height: '180px',
+                  objectFit: 'cover',
                 }}
-              >
-                {course.title}
-              </h3>
-              <p
-                style={{
-                  color: '#4b5563',
-                  fontSize: '0.95rem',
-                  marginBottom: '10px',
-                }}
-              >
-                {course.description?.slice(0, 80)}...
-              </p>
-              <Line percent={course.progress || 0} strokeWidth="3" />
+              />
+              <div style={{ padding: '15px' }}>
+                <h3
+                  style={{
+                    fontSize: '1.2rem',
+                    marginBottom: '8px',
+                    color: '#111827',
+                  }}
+                >
+                  {course.courseTitle}
+                </h3>
+                <p
+                  style={{
+                    color: '#4b5563',
+                    fontSize: '0.95rem',
+                    marginBottom: '10px',
+                  }}
+                >
+                  {course.description?.slice(0, 80)}...
+                </p>
+                <Line percent={course.progress || 0} strokeWidth="3" />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       <Footer />
     </div>

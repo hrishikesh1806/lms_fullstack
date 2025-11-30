@@ -7,11 +7,13 @@ import Loading from '../../components/student/Loading';
 const StudentsEnrolled = () => {
   const { backendUrl, userData } = useContext(AppContext);
   const [enrolledStudents, setEnrolledStudents] = useState(null);
+  const [courses, setCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState('');
 
   // Fetch JWT token directly from localStorage (manual auth system)
   const getToken = () => localStorage.getItem('token');
 
-  const fetchEnrolledStudents = async () => {
+  const fetchEnrolledStudents = async (courseId = '') => {
     try {
       const token = getToken();
       if (!token) {
@@ -19,13 +21,20 @@ const StudentsEnrolled = () => {
         return;
       }
 
-      const { data } = await axios.get(`${backendUrl}/api/educator/enrolled-students`, {
+      const url = courseId
+        ? `${backendUrl}/api/educator/enrolled-students?courseId=${courseId}`
+        : `${backendUrl}/api/educator/enrolled-students`;
+
+      const { data } = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       if (data.success) {
         // Sort / reverse for newest first
         setEnrolledStudents(data.enrolledStudents.reverse());
+        if (data.courses) {
+          setCourses(data.courses);
+        }
       } else {
         toast.error(data.message || 'Failed to load enrolled students');
       }
@@ -44,6 +53,12 @@ const StudentsEnrolled = () => {
       setEnrolledStudents([]); // empty for students
     }
   }, [userData]);
+
+  // Handle course selection change
+  const handleCourseChange = (courseId) => {
+    setSelectedCourse(courseId);
+    fetchEnrolledStudents(courseId);
+  };
 
   // 🟥 For non-educator/admin users, show restricted access message
   if (userData?.role !== 'educator' && userData?.role !== 'admin') {
@@ -79,11 +94,35 @@ const StudentsEnrolled = () => {
         Enrolled Students
       </h1>
 
+      {/* Course Filter Dropdown */}
+      {courses.length > 0 && (
+        <div className="mb-6 max-w-5xl w-full">
+          <label htmlFor="course-select" className="block text-white text-sm font-medium mb-2">
+            Filter by Course:
+          </label>
+          <select
+            id="course-select"
+            value={selectedCourse}
+            onChange={(e) => handleCourseChange(e.target.value)}
+            className="w-full md:w-96 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/30
+                       text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500
+                       focus:border-orange-500 transition-all duration-200"
+          >
+            <option value="" className="bg-gray-800 text-white">All Courses</option>
+            {courses.map((course) => (
+              <option key={course._id} value={course._id} className="bg-gray-800 text-white">
+                {course.courseTitle}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
       <div
-        className="flex flex-col max-w-5xl w-full overflow-x-auto rounded-lg shadow-xl 
-                    bg-white/10 backdrop-blur-md border border-white/20 
-                    transform hover:scale-[1.01] 
-                    hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] 
+        className="flex flex-col max-w-5xl w-full overflow-x-auto rounded-lg shadow-xl
+                    bg-white/10 backdrop-blur-md border border-white/20
+                    transform hover:scale-[1.01]
+                    hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)}
                     transition-all duration-300 ease-in-out"
       >
         <table className="table-auto w-full">

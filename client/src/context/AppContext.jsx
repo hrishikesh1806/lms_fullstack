@@ -48,7 +48,7 @@ export const AppContextProvider = (props) => {
   // =========================================================
   // 🧠 Helper: Get Token (Manual Auth)
   // =========================================================
-  const getToken = async () => {
+  const getToken = () => {
     // ✅ Only from localStorage now
     return localStorage.getItem("token");
   };

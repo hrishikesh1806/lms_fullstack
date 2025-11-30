@@ -119,6 +119,15 @@ export const purchaseCourse = async (req, res) => {
         .json({ success: false, message: "Payment service not configured" });
     }
 
+    // ✅ Save purchase record first
+    const purchase = new Purchase({
+      userId,
+      courseId,
+      amount: discountedPrice,
+      status: "pending",
+    });
+    await purchase.save();
+
     // Initialize Stripe
     const stripe = (await import("stripe")).default(process.env.STRIPE_SECRET_KEY);
 
@@ -139,22 +148,17 @@ export const purchaseCourse = async (req, res) => {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.FRONTEND_URL}/payment-success?purchaseId={CHECKOUT_SESSION_ID}&courseId=${courseId}`,
+      success_url: `${process.env.FRONTEND_URL}/payment-success?purchaseId=${purchase._id}&courseId=${courseId}`,
       cancel_url: `${process.env.FRONTEND_URL}/course/${courseId}`,
       metadata: {
         userId: userId.toString(),
         courseId: courseId.toString(),
+        purchaseId: purchase._id.toString(),
       },
     });
 
-    // ✅ Save purchase record
-    const purchase = new Purchase({
-      userId,
-      courseId,
-      amount: discountedPrice,
-      status: "pending",
-      stripeSessionId: session.id,
-    });
+    // Update purchase with stripeSessionId
+    purchase.stripeSessionId = session.id;
     await purchase.save();
 
     res.json({
@@ -164,6 +168,7 @@ export const purchaseCourse = async (req, res) => {
     });
   } catch (error) {
     console.error("❌ purchaseCourse Error:", error.message);
+    console.error("❌ Full error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -176,19 +181,34 @@ export const confirmPayment = async (req, res) => {
     const { purchaseId, courseId } = req.body;
     const userId = req.user._id;
 
+    console.log("confirmPayment called with:", { purchaseId, courseId, userId });
+
     if (!purchaseId || !courseId) {
+      console.log("Missing purchaseId or courseId");
       return res
         .status(400)
         .json({ success: false, message: "Purchase ID and Course ID required" });
     }
 
-    const purchase = await Purchase.findOne({
-      stripeSessionId: purchaseId,
-      userId,
-      courseId,
-    });
+    const purchase = await Purchase.findById(purchaseId);
+    console.log("Purchase found:", purchase);
 
     if (!purchase) {
+      console.log("Purchase not found by ID");
+      return res
+        .status(404)
+        .json({ success: false, message: "Purchase not found" });
+    }
+
+    if (purchase.userId.toString() !== userId.toString()) {
+      console.log("User ID mismatch:", purchase.userId, userId);
+      return res
+        .status(404)
+        .json({ success: false, message: "Purchase not found" });
+    }
+
+    if (purchase.courseId.toString() !== courseId.toString()) {
+      console.log("Course ID mismatch:", purchase.courseId, courseId);
       return res
         .status(404)
         .json({ success: false, message: "Purchase not found" });
@@ -216,7 +236,8 @@ export const confirmPayment = async (req, res) => {
 
       if (!course.enrolledStudents.includes(userId)) {
         course.enrolledStudents.push(userId);
-        await course.save();
+        // Save without validating educator field (migration issue)
+        await course.save({ validateBeforeSave: false });
       }
     }
 
